@@ -17,8 +17,8 @@ class Column {
         this.elevatorList = []
         this.createCallButtons(); // Calling the functions to create the call buttons
         this.createElevators();   // as well as the elevators
-        console.log(this.callButtonList);
-        console.log(this.elevatorList);
+        // console.log(this.callButtonList);
+        // console.log(this.elevatorList);
     }
     createCallButtons(){
         let numberOfCallButtons = this.amountOfFloor
@@ -57,6 +57,17 @@ class Elevator{
         this.currentFloor = _currentFloor
         this.door = new Doors(1,"closed");
         this.floorRequestButtonList = []
+        this.createFloorRequestButtons();
+        console.log(this.floorRequestButtonList);
+    }
+    createFloorRequestButtons(){
+        let floorNumber = 1
+        for(let i = 0; i < this.amountOfFloor; i++){
+            let floorButton = new FloorRequestButton(floorRequestButtonID,"off",floorNumber)
+            this.floorRequestButtonList.push(floorButton);
+            floorNumber ++;
+            floorRequestButtonID ++; 
+        }
     }
 }
 
