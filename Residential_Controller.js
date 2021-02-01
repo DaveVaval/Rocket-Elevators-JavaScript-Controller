@@ -7,7 +7,7 @@ let floorRequestButtonID= 1
 
 // Column
 class Column {
-    constructor(_id,_status,_amountOfFloor,_amountOfElevator){
+    constructor(_id,_status,_amountOfFloor,_amountOfElevator){ // Setting the base attributes we will need for this class
         console.log("number of floor: ", _amountOfFloor);
         this.id = _id;
         this.status = _status
@@ -15,8 +15,8 @@ class Column {
         this.amountOfFloor = _amountOfFloor
         this.callButtonList = []
         this.elevatorList = []
-        this.createCallButtons();
-        this.createElevators();
+        this.createCallButtons(); // Calling the functions to create the call buttons
+        this.createElevators();   // as well as the elevators
         console.log(this.callButtonList);
         console.log(this.elevatorList);
     }
@@ -25,12 +25,12 @@ class Column {
         let buttonFloor = 1
         for(let i = 0; i < numberOfCallButtons; i++){
             if(buttonFloor < this.amountOfFloor){
-                let callButton = new CallButton(callbuttonID,"off",buttonFloor,"up")
+                let callButton = new CallButton(callbuttonID,"off",buttonFloor,"up") // The first floor will only have a Up button
                 this.callButtonList.push(callButton);
                 callbuttonID ++;
             } 
             if(buttonFloor > 1){
-                let callButton = new CallButton(callbuttonID,"off",buttonFloor,"Down")
+                let callButton = new CallButton(callbuttonID,"off",buttonFloor,"Down") // the last floor will only have a Down button
                 this.callButtonList.push(callButton);
                 callbuttonID ++;
             }
@@ -39,7 +39,7 @@ class Column {
     }
     createElevators(){
         for(let i = 0; i < this.amountOfElevator; i++){
-            let elevator = new Elevator(elevatorID,"idle",this.amountOfFloor,1)
+            let elevator = new Elevator(elevatorID,"idle",this.amountOfFloor,1,"up")
             this.elevatorList.push(elevator);
             elevatorID ++;
         }
@@ -55,7 +55,7 @@ class Elevator{
         this.amountOfFloor = _amountOfFloor
         this.direction = _direction
         this.currentFloor = _currentFloor
-        this.door = new Doors();
+        this.door = new Doors(1,"closed");
         this.floorRequestButtonList = []
     }
 }
@@ -65,11 +65,11 @@ class Elevator{
 
 // Call Button
 class CallButton{
-    constructor(_id,status,floor,direction){
+    constructor(_id,_status,_floor,_direction){
         this.id = _id
-        this.status = status
-        this.floor = floor
-        this.direction = direction
+        this.status = _status
+        this.floor = _floor
+        this.direction = _direction
     }
 }
 
@@ -77,10 +77,10 @@ class CallButton{
 
 // Floor Request Button
 class FloorRequestButton{
-    constructor(id,status,floor){
-        this.id = id
-        this.status = status
-        this.floor = floor
+    constructor(_id,_status,_floor){
+        this.id = _id
+        this.status = _status
+        this.floor = _floor
     }
 }
 
@@ -88,9 +88,9 @@ class FloorRequestButton{
 
 // Doors
 class Doors{
-    constructor(id,status){
-        this.id = id
-        this.status = status
+    constructor(_id,_status){
+        this.id = _id
+        this.status = _status
     }
 }
 
