@@ -8,19 +8,21 @@ let floorRequestButtonID= 1
 // Column
 class Column {
     constructor(id,status,amountOfFloor,amountOfElevator){
+        console.log("number of floor: ", amountOfFloor);
         this.id = id;
         this.status = status
         this.amountOfElevator = amountOfElevator
         this.amountOfFloor = amountOfFloor
         this.callButtonList = []
         this.elevatorList = []
-    } 
-    createCallButtons () {
-        for(i = 0; i < this.amountOfFloor; i++){
+        this.createCallButtons();
+    }
+    createCallButtons(){
+        for(let i = 0; i < this.amountOfFloor; i++){
             let callButtons = new CallButton();
             this.callButtonList.push(callButtons);
             callbuttonID ++;
-        }  
+        } 
     }
 }
 
@@ -47,14 +49,21 @@ class CallButton{
 
 // Floor Request Button
 class FloorRequestButton{
-    
+    constructor(id,status,floor){
+        this.id = id
+        this.status = status
+        this.floor = floor
+    }
 }
 
 
 
 // Doors
 class Doors{
-    
+    constructor(id,status){
+        this.id = id
+        this.status = status
+    }
 }
 
 
