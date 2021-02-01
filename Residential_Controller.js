@@ -7,29 +7,48 @@ let floorRequestButtonID= 1
 
 // Column
 class Column {
-    constructor(id,status,amountOfFloor,amountOfElevator){
-        console.log("number of floor: ", amountOfFloor);
-        this.id = id;
-        this.status = status
-        this.amountOfElevator = amountOfElevator
-        this.amountOfFloor = amountOfFloor
+    constructor(_id,_status,_amountOfFloor,_amountOfElevator){
+        console.log("number of floor: ", _amountOfFloor);
+        this.id = _id;
+        this.status = _status
+        this.amountOfElevator = _amountOfElevator
+        this.amountOfFloor = _amountOfFloor
         this.callButtonList = []
         this.elevatorList = []
         this.createCallButtons();
+        console.log(this.callButtonList);
     }
     createCallButtons(){
-        for(let i = 0; i < this.amountOfFloor; i++){
-            let callButtons = new CallButton();
-            this.callButtonList.push(callButtons);
-            callbuttonID ++;
-        } 
+        let numberOfCallButtons = this.amountOfFloor
+        let buttonFloor = 1
+        for(let i = 0; i < numberOfCallButtons; i++){
+            if(buttonFloor < this.amountOfFloor){
+                let callButton = new CallButton(callbuttonID,"off",buttonFloor,"up")
+                this.callButtonList.push(callButton);
+                callbuttonID ++;
+            } 
+            if(buttonFloor > 1){
+                let callButton = new CallButton(callbuttonID,"off",buttonFloor,"Down")
+                this.callButtonList.push(callButton);
+                callbuttonID ++;
+            }
+            buttonFloor ++;
+        }
     }
 }
 
 
 // Elelvator
 class Elevator{
-    
+    constructor(_id,_status,_amountOfFloor,_currentFloor){
+        this.id = _id
+        this.status = _status
+        this.amountOfFloor = _amountOfFloor
+        this.direction = upOrdown
+        this.currentFloor = _currentFloor
+        this.door = new Doors();
+        this.floorRequestButtonList = []
+    }
 }
 
 
@@ -37,8 +56,8 @@ class Elevator{
 
 // Call Button
 class CallButton{
-    constructor(id,status,floor,direction){
-        this.id = id
+    constructor(_id,status,floor,direction){
+        this.id = _id
         this.status = status
         this.floor = floor
         this.direction = direction
@@ -69,4 +88,4 @@ class Doors{
 
 
 // Scenarios
-let  residentialColum = new Column(1,1,10,2)
+let  residentialColum = new Column(1,1,10,2);
