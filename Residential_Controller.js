@@ -57,8 +57,9 @@ class Elevator{
         this.currentFloor = _currentFloor
         this.door = new Doors(1,"closed");
         this.floorRequestButtonList = []
+        this.floorRequestList = []
         this.createFloorRequestButtons();
-        console.log(this.floorRequestButtonList);
+        //console.log(this.floorRequestButtonList);
     }
     createFloorRequestButtons(){
         let floorNumber = 1
@@ -68,6 +69,18 @@ class Elevator{
             floorNumber ++;
             floorRequestButtonID ++; 
         }
+    }
+    requestFloor(floor){
+        this.floorRequestList.push(floor) // will have to come back to this
+    }
+    move(){
+        while(this.floorRequestList != 0){
+            let destination = this.floorRequestList[0];
+
+        }
+    }
+    openDoors(){
+        
     }
 }
 
