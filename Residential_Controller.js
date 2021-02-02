@@ -1,3 +1,7 @@
+const { count } = require("console");
+const { TIMEOUT } = require("dns");
+const { setTimeout } = require("timers");
+
 // Residential Controller
 let callbuttonID = 1
 let elevatorID = 1
@@ -17,8 +21,9 @@ class Column {
         this.elevatorList = []
         this.createCallButtons(); // Calling the functions to create the call buttons
         this.createElevators();   // as well as the elevators
-        //  console.log(this.callButtonList);
-        //  console.log(this.elevatorList);
+        //console.log(this.callButtonList);
+        //console.log(this.elevatorList);
+        //this.findBestElevator();
     }
     createCallButtons(){
         let numberOfCallButtons = this.amountOfFloor
@@ -39,30 +44,59 @@ class Column {
     }
     createElevators(){
         for(let i = 0; i < this.amountOfElevator; i++){
-            let elevator = new Elevator(elevatorID,"idle",this.amountOfFloor,1,"up")
+            let elevator = new Elevator(elevatorID,"idle",this.amountOfFloor,1,"up",this.amountOfElevator)
             this.elevatorList.push(elevator);
             elevatorID ++;
         }
     }
-    requestElevator(requestedFloor,userFloor,direction){
-
+    requestElevator(requestedFloor,direction){
+    }
+    findElevator(requestedFloor,requestedDirection){
+        let bestElevatorInfo = {
+            bestElevator: null,
+            bestScore: 5,
+            referenceGap: Infinity
+        }
+        this.elevatorList.forEach(elevator => {
+            if(requestedFloor == elevator.currentFloor && elevator.status == "idle" && requestedDirection == elevator.direction){
+                bestElevatorInfo = this.checkElevator(1,elevator,bestElevatorInfo,requestedFloor)
+            }
+        });
+        return bestElevatorInfo.bestElevator;
+    }
+    checkElevator(scoreTocheck,elevator,bestElevatorInfo,floor){
+        if(scoreTocheck < bestElevatorInfo.bestScore){
+            bestElevatorInfo.bestScore = scoreTocheck
+            bestElevatorInfo.bestElevator = elevator
+            bestElevatorInfo.referenceGap = Math.abs(elevator.currentFloor - floor)
+        } 
+        else if(bestElevatorInfo.bestScore == scoreTocheck){
+            let gap = Math.abs(elevator.currentFloor - floor)
+            if(bestElevatorInfo.referenceGap > gap){
+                bestElevatorInfo.bestScore = scoreTocheck
+                bestElevatorInfo.bestElevator = elevator
+                bestElevatorInfo.referenceGap = gap
+            }
+        }
+        return bestElevatorInfo;
     }
 }
 
-
 // Elelvator
 class Elevator{
-    constructor(_id,_status,_amountOfFloor,_currentFloor,_direction){
+    constructor(_id,_status,_amountOfFloor,_currentFloor){
         this.id = _id
         this.status = _status
         this.amountOfFloor = _amountOfFloor
         this.direction = _direction
         this.currentFloor = _currentFloor
-        this.door = new Doors(1,"closed");
+        this.door = new Doors(_id, "closed") 
         this.floorRequestButtonList = []
         this.floorRequestList = []
         this.createFloorRequestButtons();
+        
         //console.log(this.floorRequestButtonList);
+        console.log(this.door);
     }
     createFloorRequestButtons(){ // method that creates the floor request buttons for each instance of elevator
         let floorNumber = 1
@@ -74,33 +108,43 @@ class Elevator{
         }
     }
     requestFloor(floor){
-        this.floorRequestList.push(floor) // will have to come back to this
+        this.floorRequestList.push(floor)
+        this.sortFloorRequestList();
+        this.move();
+        this.openDoors(); // will have to come back to this
     }
-    move(userFloor,userdirection){  // This method will make the elevator move
-        this.status = "moving"
-        this.direction = userdirection
-        if(this.direction == "up"){
-            while(this.currentFloor != userFloor){
-                this.currentFloor ++;
+    move(){  // This method will make the elevator move
+        while(this.floorRequestList != []){
+            let destination = this.floorRequestList[0]
+            this.status = "moving"
+            if(this.currentFloor < destination){
+                this.direction = "up"
+                while(this.currentFloor < destination){
+                    this.currentFloor++;
+                }
+            }
+            else if(this.currentFloor > destination){
+                this.direction = "down"
+                while(this.currentFloor > destination){
+                    this.currentFloor--;
+                }
             }
             this.status = "idle"
-            //this.openDoors();
+            this.floorRequestList.shift();
         }
-        else if(this.direction == "down"){
-            while(this.currentFloor != userFloor){
-                let timer = 3000;
-                setTimeout(() => {
-                    this.currentFloor --;
-                }, timer);
-            }
-        }     
+    } // Will have to look this up
+    sortFloorRequestList(){
+        if(this.direction == "up"){
+            this.floorRequestList.sort(function(a,b){return a-b});
+        }
+        else{
+            this.floorRequestList.sort(function(a,b){return b-a});
+        }
     }
     openDoors(){ // the door opening method
-        let timer = 5000;
-        this.door.status("open")
-        setTimeout(() => {
-            this.door.status("closed")
-         }, timer);
+        this.door.status = "open" 
+        this.door.status = "closed"
+        //console.log(this.door.status);
     }
 }
 
@@ -142,10 +186,14 @@ class Doors{
 
 // Scenarios
 let  residentialColum = new Column(1,"online",10,2);
+console.log(residentialColum.elevatorList)
 
 // Scenario 1
 
 //////////////// testing //////////////////////
-let testElevator = new Elevator(1,"idle",10,1,"stopped")
-testElevator.move(3,"up");
-console.log(testElevator.currentFloor, testElevator.status)
+//let testElevator = new Elevator(1,"idle",10,1,"stopped")
+//testElevator.move(10,"up");
+//console.log("elevator: ",testElevator.currentFloor, testElevator.status)
+//testElevator.openDoors();
+
+
