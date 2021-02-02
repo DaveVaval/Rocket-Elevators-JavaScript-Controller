@@ -64,7 +64,7 @@ class Elevator{
         this.createFloorRequestButtons();
         //console.log(this.floorRequestButtonList);
     }
-    createFloorRequestButtons(){
+    createFloorRequestButtons(){ // method that creates the floor request buttons for each instance of elevator
         let floorNumber = 1
         for(let i = 0; i < this.amountOfFloor; i++){
             let floorButton = new FloorRequestButton(floorRequestButtonID,"off",floorNumber)
@@ -76,12 +76,26 @@ class Elevator{
     requestFloor(floor){
         this.floorRequestList.push(floor) // will have to come back to this
     }
-    move(){
-        while(this.floorRequestList != 0){
-            let destination = this.floorRequestList[0];
+    move(userFloor,userdirection){  // This method will make the elevator move
+        this.status = "moving"
+        this.direction = userdirection
+        if(this.direction == "up"){
+            while(this.currentFloor != userFloor){
+                this.currentFloor ++;
+            }
+            this.status = "idle"
+            //this.openDoors();
         }
-    } 
-    openDoors(){
+        else if(this.direction == "down"){
+            while(this.currentFloor != userFloor){
+                let timer = 3000;
+                setTimeout(() => {
+                    this.currentFloor --;
+                }, timer);
+            }
+        }     
+    }
+    openDoors(){ // the door opening method
         let timer = 5000;
         this.door.status("open")
         setTimeout(() => {
@@ -130,6 +144,8 @@ class Doors{
 let  residentialColum = new Column(1,"online",10,2);
 
 // Scenario 1
-scenario1(){
-residentialColum.
-}
+
+//////////////// testing //////////////////////
+let testElevator = new Elevator(1,"idle",10,1,"stopped")
+testElevator.move(3,"up");
+console.log(testElevator.currentFloor, testElevator.status)
