@@ -8,7 +8,6 @@ let floorRequestButtonID= 1
 // Column
 class Column {
     constructor(_id,_status,_amountOfFloor,_amountOfElevator){ // Setting the base attributes we will need for this class
-        console.log("number of floor: ", _amountOfFloor);
         this.id = _id;
         this.status = _status
         this.amountOfElevator = _amountOfElevator
@@ -66,6 +65,9 @@ class Column {
                 bestElevatorInfo = this.checkElevator(2, elevator, bestElevatorInfo, requestedFloor)
             }
             else if(requestedFloor < elevator.currentFloor && elevator.direction == "down" && requestedDirection == elevator.direction){
+                bestElevatorInfo = this.checkElevator(2, elevator, bestElevatorInfo, requestedFloor)
+            }
+            else if(elevator.status == "idle"){
                 bestElevatorInfo = this.checkElevator(3, elevator, bestElevatorInfo, requestedFloor)
             }
             else{
@@ -194,20 +196,75 @@ class Doors{
 //----------------------------------------------------------------------// testing //--------------------------------------------------------------------------------//
 
 // Scenario 1
-let  column1 = new Column(1,"online",10,2);
+// let  column1 = new Column(1, "online", 10, 2);
 // console.log("Elevator A startup:", column1.elevatorList[0].currentFloor)
 // console.log("Elevator B startup:", column1.elevatorList[1].currentFloor)
 
-column1.elevatorList[0].currentFloor = 2
-column1.elevatorList[1].currentFloor = 6
+// column1.elevatorList[0].currentFloor = 2
+// column1.elevatorList[1].currentFloor = 6
 
 // console.log("Elevator A idle:", column1.elevatorList[0].currentFloor)
 // console.log("Elevator B idle:", column1.elevatorList[1].currentFloor)
 
-let elevator = column1.requestElevator(3,"up")
+// let elevator1 = column1.requestElevator(3, "up")
 // console.log("Elevator A goes to user:", column1.elevatorList[0].currentFloor)
-elevator.requestFloor(7)
+// elevator1.requestFloor(7)
 // console.log("Elevator A after user travel:", column1.elevatorList[0].currentFloor)
 
 
 // Scenario 2
+// let column2 = new Column(1, "online", 10, 2)
+
+// column2.elevatorList[0].currentFloor = 10
+// column2.elevatorList[1].currentFloor = 3
+// elevators at the begining
+// console.log("Elevator A idle:", column2.elevatorList[0].currentFloor)
+// console.log("Elevator B idle:", column2.elevatorList[1].currentFloor)
+// console.log("User at floor 1 wants to go to floor 6")
+// let elevator2 = column2.requestElevator(1, "up")
+// elevator2.requestFloor(6)
+// console.log("Elevator B after user travel:", column2.elevatorList[1].currentFloor)
+
+// console.log("2 minutes later...")
+
+// console.log("User at floor 3 wants to go to floor 5")
+// let elevator3 = column2.requestElevator(3, "up")
+// elevator3.requestFloor(5)
+// console.log("Elevator B after user travel:", column2.elevatorList[1].currentFloor)
+
+// console.log("2 minutes later...")
+
+// console.log("User at floor 9 wants to go to floor 2")
+// let elevator4 = column2.requestElevator(9, "down")
+// elevator4.requestFloor(2)
+// console.log("Elevator A after user travel:", column2.elevatorList[0].currentFloor)
+
+
+
+// Scenario 3
+let column3 = new Column(1, "online", 10, 2)
+
+column3.elevatorList[0].currentFloor = 10
+column3.elevatorList[0].direction = "down"
+console.log("Elevator A idle:", column3.elevatorList[0].currentFloor)
+
+column3.elevatorList[1].currentFloor = 3
+console.log("Elevator B idle:", column3.elevatorList[1].currentFloor)
+console.log(" ")
+console.log("Elevator B is moving to floor 6...")
+console.log(" ")
+column3.elevatorList[1].requestFloor(6)
+console.log("Elevator A position:", column3.elevatorList[0].currentFloor)
+console.log("Elevator B reached floor:", column3.elevatorList[1].currentFloor)
+console.log()
+console.log("User at floor 3 wants to go to floor 2")
+let elevator5 = column3.requestElevator(3, "down")
+elevator5.requestFloor(2)
+console.log("Elevator A after user travel:", column3.elevatorList[0].currentFloor)
+console.log("Elevator B floor:", column3.elevatorList[1].currentFloor)
+console.log()
+console.log("5 minutes later...")
+console.log("User at floor 10 wants to go to floor 3")
+let elevator6 = column3.requestElevator(10, "down")
+elevator6.requestFloor(3)
+console.log("Elevator B after user travel:", column3.elevatorList[1].currentFloor)
