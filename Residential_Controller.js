@@ -1,7 +1,3 @@
-const { count } = require("console");
-const { TIMEOUT } = require("dns");
-const { setTimeout } = require("timers");
-
 // Residential Controller
 let callbuttonID = 1
 let elevatorID = 1
@@ -44,12 +40,17 @@ class Column {
     }
     createElevators(){
         for(let i = 0; i < this.amountOfElevator; i++){
-            let elevator = new Elevator(elevatorID,"idle",this.amountOfFloor,1,"up",this.amountOfElevator)
+            let elevator = new Elevator(elevatorID,"idle",this.amountOfFloor,1)
             this.elevatorList.push(elevator);
             elevatorID ++;
         }
     }
     requestElevator(requestedFloor,direction){
+        let elevator = this.findElevator(requestedFloor,direction);
+        elevator.floorRequestList.push(requestedFloor);
+        elevator.move();
+        elevator.openDoors();
+        return elevator;
     }
     findElevator(requestedFloor,requestedDirection){
         let bestElevatorInfo = {
@@ -59,7 +60,16 @@ class Column {
         }
         this.elevatorList.forEach(elevator => {
             if(requestedFloor == elevator.currentFloor && elevator.status == "idle" && requestedDirection == elevator.direction){
-                bestElevatorInfo = this.checkElevator(1,elevator,bestElevatorInfo,requestedFloor)
+                bestElevatorInfo = this.checkElevator(1, elevator, bestElevatorInfo, requestedFloor)
+            }
+            else if(requestedFloor > elevator.currentFloor && elevator.direction == "up" && requestedDirection == elevator.direction){
+                bestElevatorInfo = this.checkElevator(2, elevator, bestElevatorInfo, requestedFloor)
+            }
+            else if(requestedFloor < elevator.currentFloor && elevator.direction == "down" && requestedDirection == elevator.direction){
+                bestElevatorInfo = this.checkElevator(3, elevator, bestElevatorInfo, requestedFloor)
+            }
+            else{
+                bestElevatorInfo = this.checkElevator(4, elevator, bestElevatorInfo, requestedFloor)
             }
         });
         return bestElevatorInfo.bestElevator;
@@ -88,7 +98,7 @@ class Elevator{
         this.id = _id
         this.status = _status
         this.amountOfFloor = _amountOfFloor
-        this.direction = _direction
+        this.direction = null
         this.currentFloor = _currentFloor
         this.door = new Doors(_id, "closed") 
         this.floorRequestButtonList = []
@@ -96,7 +106,7 @@ class Elevator{
         this.createFloorRequestButtons();
         
         //console.log(this.floorRequestButtonList);
-        console.log(this.door);
+        //console.log(this.door);
     }
     createFloorRequestButtons(){ // method that creates the floor request buttons for each instance of elevator
         let floorNumber = 1
@@ -114,7 +124,7 @@ class Elevator{
         this.openDoors(); // will have to come back to this
     }
     move(){  // This method will make the elevator move
-        while(this.floorRequestList != []){
+        while(this.floorRequestList.length != 0){
             let destination = this.floorRequestList[0]
             this.status = "moving"
             if(this.currentFloor < destination){
@@ -149,8 +159,6 @@ class Elevator{
 }
 
 
-
-
 // Call Button
 class CallButton{
     constructor(_id,_status,_floor,_direction){
@@ -183,17 +191,23 @@ class Doors{
 }
 
 
-
-// Scenarios
-let  residentialColum = new Column(1,"online",10,2);
-console.log(residentialColum.elevatorList)
+//----------------------------------------------------------------------// testing //--------------------------------------------------------------------------------//
 
 // Scenario 1
+let  column1 = new Column(1,"online",10,2);
+// console.log("Elevator A startup:", column1.elevatorList[0].currentFloor)
+// console.log("Elevator B startup:", column1.elevatorList[1].currentFloor)
 
-//////////////// testing //////////////////////
-//let testElevator = new Elevator(1,"idle",10,1,"stopped")
-//testElevator.move(10,"up");
-//console.log("elevator: ",testElevator.currentFloor, testElevator.status)
-//testElevator.openDoors();
+column1.elevatorList[0].currentFloor = 2
+column1.elevatorList[1].currentFloor = 6
+
+// console.log("Elevator A idle:", column1.elevatorList[0].currentFloor)
+// console.log("Elevator B idle:", column1.elevatorList[1].currentFloor)
+
+let elevator = column1.requestElevator(3,"up")
+// console.log("Elevator A goes to user:", column1.elevatorList[0].currentFloor)
+elevator.requestFloor(7)
+// console.log("Elevator A after user travel:", column1.elevatorList[0].currentFloor)
 
 
+// Scenario 2
