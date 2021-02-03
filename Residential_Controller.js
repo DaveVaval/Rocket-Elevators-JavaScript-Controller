@@ -252,4 +252,3 @@ function Scenario3(){
     let elevator6 = column3.requestElevator(10, "down")
     elevator6.requestFloor(3)
 }
-Scenario2();
