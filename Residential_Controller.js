@@ -102,7 +102,7 @@ class Elevator{
         this.amountOfFloor = _amountOfFloor
         this.direction = null
         this.currentFloor = _currentFloor
-        this.door = new Doors(_id, "closed") 
+        this.doors = new Door(_id, "closed") 
         this.floorRequestButtonList = []
         this.floorRequestList = []
         this.createFloorRequestButtons();
@@ -114,7 +114,7 @@ class Elevator{
             let floorButton = new FloorRequestButton(floorRequestButtonID, "off", floorNumber)
             this.floorRequestButtonList.push(floorButton);
             floorNumber ++;
-            floorRequestButtonID ++; 
+            floorRequestButtonID ++;
         }
     }
     // This is the main method that will opperate the Elevator once it recieves a floor
@@ -154,10 +154,10 @@ class Elevator{
             this.floorRequestList.sort(function(a,b){return b-a});
         }
     }
-    // the basic door opening method
+    // the basic doors opening method
     openDoors(){
-        this.door.status = "open" 
-        this.door.status = "closed"
+        this.doors.status = "open" 
+        this.doors.status = "closed"
     }
 }
 
@@ -180,8 +180,8 @@ class FloorRequestButton{
     }
 }
 
-// Doors
-class Doors{
+// Door
+class Door{
     constructor(_id,_status){
         this.id = _id
         this.status = _status
@@ -252,3 +252,5 @@ function Scenario3(){
     let elevator6 = column3.requestElevator(10, "down")
     elevator6.requestFloor(3)
 }
+
+module.exports = {Column, Elevator, CallButton, FloorRequestButton, Door}

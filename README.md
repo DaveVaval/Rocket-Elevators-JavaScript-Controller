@@ -2,10 +2,10 @@
 
 ### This was one hell of a challenge!
 
-If you want to test the script you can copy this function at the bottom, and run the script in your terminal!
+If you want to test the script you can paste Scenario2(); , and run the script in your terminal!
 Rocket Elevators TO THE MOON!
 ```C#
-function Scenario(){
+function Scenario2(){
     // Creating a new instance of Column
     let column2 = new Column(2, "online", 10, 2)
     // setting the base attributes for the start of this scenario
@@ -22,7 +22,20 @@ function Scenario(){
     elevator2.requestFloor(6)
     console.log("Elevator B reached floor:",column2.elevatorList[1].currentFloor)
     console.log("User gets out...")
+    console.log("2 minutes later...")
+    console.log("User on floor 3 wants to go up to floor 5")
+    let elevator3 = column2.requestElevator(3, "up")
+    console.log("Elevator B is sent to floor:", column2.elevatorList[1].currentFloor)
+    console.log("User enters the elevator and presses on floor 5")
+    elevator3.requestFloor(5)
+    console.log("User reaches floor",column2.elevatorList[1].currentFloor,"and gets out")
+    console.log("Some time after...")
+    console.log("User on floor 9 wants to go up to floor 2")
+    let elevator4 = column2.requestElevator(9, "down")
+    console.log("Elevator A is sent to floor:", column2.elevatorList[0].currentFloor)
+    console.log("User enters the elevator and presses on floor 2")
+    elevator4.requestFloor(2)
+    console.log("User reaches floor",column2.elevatorList[0].currentFloor,"and gets out")
 }
-Scenario();
 ```
 Now on to the next challenge!

@@ -1,0 +1,19 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "Resdiential_Controller",
+  "main": "Residential_Controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaveVaval/Rocket-Elevators-JavaScript-Controller.git"
+  },
+  "author": "Dave Vaval",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaveVaval/Rocket-Elevators-JavaScript-Controller/issues"
+  },
+  "homepage": "https://github.com/DaveVaval/Rocket-Elevators-JavaScript-Controller#readme"
+}
