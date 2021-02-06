@@ -1,6 +1,6 @@
 # Rocket Elevators JavaScript Controller 
 
-![alt text](https://github.com/DaveVaval/Rocket-Elevators-Ruby-Controller/blob/Main/img/R3.png)
+![alt text](https://github.com/DaveVaval/Rocket-Elevators-JavaScript-Controller/blob/Main/img/R3.png)
 
 Welcome to the JavaScript controller for Rocket Elevators! 
 
